@@ -12,19 +12,24 @@ steps:
 
 - script: |
     set -euo pipefail
+
     git config user.name "Kamreef Salisbury"
     git config user.email "kamreef.salisbury@icloud.com"
 
-    git remote remove github || true
-    git remote add github "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git"
+    if git remote get-url github >/dev/null 2>&1; then
+      git remote remove github
+    fi
+
+    git remote add github "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_OWNER}/${GITHUB_REPO}.git"
 
     git fetch origin
-    git checkout $(Build.SourceBranchName)
-    git pull origin $(Build.SourceBranchName)
+    git checkout "$(Build.SourceBranchName)"
+    git pull origin "$(Build.SourceBranchName)"
 
-    git push github $(Build.SourceBranchName)
+    git push github "$(Build.SourceBranchName)"
   displayName: Mirror to GitHub
   env:
     GITHUB_USER: $(GITHUB_USER)
     GITHUB_TOKEN: $(GITHUB_TOKEN)
+    GITHUB_OWNER: $(GITHUB_OWNER)
     GITHUB_REPO: $(GITHUB_REPO)
