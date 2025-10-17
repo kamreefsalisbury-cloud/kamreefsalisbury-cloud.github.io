@@ -1,20 +1,19 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# github-pages-starter
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+A template for including data visualizations in a Jekyll-powered blog with Github Pages.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+[DEMO](https://musa-550-fall-2022.github.io/github-pages-starter/)
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+## Steps
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+- Click on the "Use this template" button to create a new repository.
+- Choose a new name for your new repository
+- Go to the Settings section of your new repository, scroll down to the "Github Pages" section, and select the "Main" as the branch to be used for GitHub pages. This will automatically build the website.
+- Customize your site
+  - Enter your site name, description, etc by editing the `_config.yml` file.
+  - There are two different ways that you can make changes to your blog's files:
+    - Edit files within your in the browser at GitHub.com
+    - Clone down your repository and make updates locally, then push them to your GitHub repository.
+- Publish a post
+  - Posts are written in Markdown and any files added to the `_posts` directory will be automatically uploaded and published
+  - Useful resource: [Markdown Cheatsheet](http://www.jekyllnow.com/Markdown-Style-Guide/)
