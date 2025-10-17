@@ -13,6 +13,7 @@ steps:
 - checkout: self
   clean: true
   fetchDepth: 0   # ensure full history for push
+  persistCredentials: true   # retain System.AccessToken for later git fetch/push
 
 - script: |
     set -euo pipefail
