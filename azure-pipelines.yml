@@ -1,3 +1,6 @@
+variables:
+- group: gh-vars
+
 trigger:
   branches:
     include:
