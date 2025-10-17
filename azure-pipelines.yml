@@ -1,0 +1,30 @@
+trigger:
+  branches:
+    include:
+      - main  # adjust as required
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- checkout: self
+  persistCredentials: true
+
+- script: |
+    set -euo pipefail
+    git config user.name "Kamreef Salisbury"
+    git config user.email "kamreef.salisbury@icloud.com"
+
+    git remote remove github || true
+    git remote add github "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git"
+
+    git fetch origin
+    git checkout $(Build.SourceBranchName)
+    git pull origin $(Build.SourceBranchName)
+
+    git push github $(Build.SourceBranchName)
+  displayName: Mirror to GitHub
+  env:
+    GITHUB_USER: $(GITHUB_USER)
+    GITHUB_TOKEN: $(GITHUB_TOKEN)
+    GITHUB_REPO: $(GITHUB_REPO)
