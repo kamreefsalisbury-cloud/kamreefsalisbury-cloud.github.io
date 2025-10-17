@@ -16,20 +16,26 @@ steps:
 - script: |
     set -euo pipefail
 
-    git config user.name "Kamreef Salisbury"
+    git config user.name "Kam Reef Salisbury"
     git config user.email "kamreef.salisbury@icloud.com"
 
+    # Reset repo to Azure DevOps state
+    git fetch origin
+    git checkout "$(Build.SourceBranchName)"
+    git reset --hard "origin/$(Build.SourceBranchName)"
+
+    # Configure GitHub remote
     if git remote get-url github >/dev/null 2>&1; then
       git remote remove github
     fi
 
     git remote add github "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_OWNER}/${GITHUB_REPO}.git"
 
-    git fetch origin
-    git checkout "$(Build.SourceBranchName)"
-    git pull origin "$(Build.SourceBranchName)"
+    # Optional: fetch GitHub for visibility before overwriting
+    git fetch github "$(Build.SourceBranchName)" || true
 
-    git push github "$(Build.SourceBranchName)"
+    # Mirror Azure DevOps to GitHub (overwrites remote history)
+    git push github "$(Build.SourceBranchName)" --force-with-lease
   displayName: Mirror to GitHub
   env:
     GITHUB_TOKEN: $(GITHUB_TOKEN)
