@@ -23,7 +23,7 @@ steps:
       git remote remove github
     fi
 
-    git remote add github "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_OWNER}/${GITHUB_REPO}.git"
+    git remote add github "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_OWNER}/${GITHUB_REPO}.git"
 
     git fetch origin
     git checkout "$(Build.SourceBranchName)"
@@ -32,8 +32,6 @@ steps:
     git push github "$(Build.SourceBranchName)"
   displayName: Mirror to GitHub
   env:
-    GITHUB_USER: $(GITHUB_USER)
     GITHUB_TOKEN: $(GITHUB_TOKEN)
     GITHUB_OWNER: $(GITHUB_OWNER)
     GITHUB_REPO: $(GITHUB_REPO)
-    
