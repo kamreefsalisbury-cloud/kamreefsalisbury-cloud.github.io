@@ -11,7 +11,8 @@ pool:
 
 steps:
 - checkout: self
-  persistCredentials: true
+  clean: true
+  fetchDepth: 0   # ensure full history for push
 
 - script: |
     set -euo pipefail
