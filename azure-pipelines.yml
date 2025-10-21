@@ -1,0 +1,45 @@
+variables:
+- group: gh-vars
+
+trigger:
+  branches:
+    include:
+      - main  # adjust as required
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- checkout: self
+  clean: true
+  fetchDepth: 0   # ensure full history for push
+  persistCredentials: true   # retain System.AccessToken for later git fetch/push
+
+- script: |
+    set -euo pipefail
+
+    git config user.name "Kam Reef Salisbury"
+    git config user.email "kamreef.salisbury@icloud.com"
+
+    # Reset repo to Azure DevOps state
+    git fetch origin
+    git checkout "$(Build.SourceBranchName)"
+    git reset --hard "origin/$(Build.SourceBranchName)"
+
+    # Configure GitHub remote
+    if git remote get-url github >/dev/null 2>&1; then
+      git remote remove github
+    fi
+
+    git remote add github "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_OWNER}/${GITHUB_REPO}.git"
+
+    # Optional: fetch GitHub for visibility before overwriting
+    git fetch github "$(Build.SourceBranchName)" || true
+
+    # Mirror Azure DevOps to GitHub (overwrites remote history)
+    git push github "$(Build.SourceBranchName)" --force-with-lease
+  displayName: Mirror to GitHub
+  env:
+    GITHUB_TOKEN: $(GITHUB_TOKEN)
+    GITHUB_OWNER: $(GITHUB_OWNER)
+    GITHUB_REPO: $(GITHUB_REPO)
