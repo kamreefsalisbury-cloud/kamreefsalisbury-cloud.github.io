@@ -56,9 +56,9 @@ plugins:
   - jekyll-include-cache
 
 author:
-  name: "Kamreef Salisbury"
+  name: 
   avatar:
-  bio: "Not on Social Media."
+  bio: "Kam-Reef is Not on Social Media."
 #  links:
 #    - label: "Website"
 #      icon: "fas fa-fw fa-link"
