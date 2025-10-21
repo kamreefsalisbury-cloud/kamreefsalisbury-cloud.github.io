@@ -18,8 +18,8 @@ steps:
 - script: |
     set -euo pipefail
 
-    git config user.name "Kam Reef Salisbury"
-    git config user.email "kamreef.salisbury@icloud.com"
+    git config user.name "$(GITHUB_NAME)"
+    git config user.email "$(GITHUB_USER)"
 
     # Reset repo to Azure DevOps state
     git fetch origin
