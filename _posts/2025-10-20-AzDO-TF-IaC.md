@@ -11,14 +11,14 @@ tags:
 
 ### Automating Azure Dev Infrastructure with Terraform & Azure DevOps
 
-Spin up a secure development foundation in Azure using Infrastructure as Code (IaC) and Azure Pipelines. This guide walks through the exact steps I used to stand up a dev resource group and virtual network with Terraform, backed by a remote state store and automated CI/CD.
+Spin up a secure development foundation in Azure using Infrastructure as Code (IaC) and Azure Pipelines. This guide walks through the exact steps I used to stand up a dev resource group and virtual network with Terraform, backed by a remote state store and automated CI/CD hosted in Azure DevOPS.
 
 ---
 
 ## Prerequisites
 
 - Azure subscription (with contributor rights): `<subscriptionId>`
-- Azure CLI (`az` `≥2.77.0`) and Terraform (`≥ 1.13.4`)
+- Azure CLI (`≥2.77.0`) and Terraform (`≥ 1.13.4`)
 - Azure DevOps project with repo + service connection (`krss-dev-subscription`) using workload identity federation
 - Remote state storage account: `tfstatekrss1` in RG `dev-tf-state`
 - Local workstation (VS Code) or pipeline agent with network access to Azure services
@@ -27,7 +27,7 @@ Spin up a secure development foundation in Azure using Infrastructure as Code (I
 
 ## Step 1 – Bootstrap Remote State (One-Time Manual Build)
 
-1. Create the resource group and storage account (if not already):
+1. Create the Terraform State resource group and storage account dependecies:
 
    ```bash
    az group create -n dev-tf-state -l eastus2
@@ -42,7 +42,7 @@ Spin up a secure development foundation in Azure using Infrastructure as Code (I
    az storage container create --account-name tfstatekrss1 --name tfstate
    ```
 
-2. Assign Terraform service principal (from krss-dev-subscription) Storage Blob Data Contributor:
+2. Assign the Terraform service principal (from the Azure DevOPS pipeline connection) the Storage Blob Data Contributor role:
 ```bash
 az role assignment create \
   --assignee-object-id <sp-object-id> \
@@ -50,9 +50,9 @@ az role assignment create \
   --scope $(az storage account show -g dev-tf-state -n tfstatekrss1 --query id -o tsv)
 ```
 
-3. Security tweaks: enable soft delete, Defender for Storage, and later restrict network access (service endpoint, private endpoint or conditional access trusted subnet).
+3. Security updates: enable Storage Account soft delete, Defender for Storage, and later restrict network access (service endpoint, private endpoint or conditional access trusted subnet). Public access is protected by RBAC and is adaquate for learning. Development and production environments at a minimum, must use a VNet located VM with Azure DevOPS agent and service endpoint.
 
-## Step 2 – Author Terraform Configuration
+## Step 2 – Initialize the Terraform Configuration
 
 The repository root layout:
 ```
@@ -81,7 +81,7 @@ terraform {
 ```yaml
 provider "azurerm" {
   features {}
-  subscription_id = "89382f9a-deac-49be-a1af-9a3a8d7ceed3"
+  subscription_id = "<subscripitionId>"
 }
 
 locals {
@@ -314,8 +314,8 @@ Once the VNet exists (especially before hosting a self-hosted agent):
 
 - Tagging: Ensure default tags (environment, costCenter, owner) satisfy policy.
 - RBAC: Terraform SP has minimum rights (Contributor on RG, Blob Data Contributor on state storage).
-- Policy compliance: Validate wasted-lower-case naming, allowed locations, etc.
-- Secret management: Use variable groups or Key Vault; never commit secrets.
+- Policy compliance: Validate lower-case naming, allowed locations, tags etc.
+- Secret management: Use variable groups or Key Vault; never commit secrets in code.
 - Monitoring: Set up pipeline failure alerts and resource diagnostics.
 
 ## Summary
