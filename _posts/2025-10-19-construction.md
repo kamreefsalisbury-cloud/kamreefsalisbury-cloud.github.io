@@ -1,7 +1,7 @@
 ---
 title: "Example: Construction"
 date: 2025-10-19
-published: true
+published: false
 tags: [construction, published]
 excerpt: "Example published blog post on static pages using Jekyll."
 folium-loader:
