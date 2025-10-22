@@ -1,6 +1,6 @@
 ---
 title: "Mirror Azure DevOPS Repository to Github"
-date: 2025-10-23
+date: 2025-10-21
 published: true
 categories:
   - blog
