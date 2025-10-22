@@ -1,5 +1,5 @@
 variables:
-- group: gh-vars
+- group: gh-vars # variables group from the AzDO Project's Library
 
 trigger:
   branches:
