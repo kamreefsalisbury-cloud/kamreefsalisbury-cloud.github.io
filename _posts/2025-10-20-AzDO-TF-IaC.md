@@ -9,7 +9,7 @@ tags:
   - Azure DevOPS
 ---
 
-# Automating Azure Dev Infrastructure with Terraform & Azure DevOps
+### Automating Azure Dev Infrastructure with Terraform & Azure DevOps
 
 Spin up a secure development foundation in Azure using Infrastructure as Code (IaC) and Azure Pipelines. This guide walks through the exact steps I used to stand up a dev resource group and virtual network with Terraform, backed by a remote state store and automated CI/CD.
 

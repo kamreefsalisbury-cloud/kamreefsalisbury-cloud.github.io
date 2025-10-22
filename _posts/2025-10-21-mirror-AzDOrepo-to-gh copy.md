@@ -9,7 +9,7 @@ tags:
   - Azure DevOPS
 ---
 
-# Mirroring an Azure DevOps Repo to GitHub with Azure Pipelines
+### Mirroring an Azure DevOps Repo to GitHub with Azure Pipelines
 
 Keeping Azure DevOps (AzDO) and GitHub repositories in sync makes sense when you want Azure DevOPS Pipelines orchestration but also need GitHub for publishing, Pages, or collaboration. This post walks through a secure, automated mirror from AzDO → GitHub using IaC-friendly steps.
 
